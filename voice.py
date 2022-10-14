@@ -3,6 +3,8 @@ from pydub import AudioSegment
 import os
 import re
 import requests
+from time import sleep
+from tqdm import tqdm
 #import urllib.parse
 
 op=input("输入干员名称以获取该干员全部语音文件：")
@@ -30,31 +32,37 @@ for a in py:
     pinyin.append(a.title())
 pinyin="".join(pinyin)
 os.mkdir(workdir+"\\"+op+"\\"+"日文语音") if not os.path.exists(workdir+"\\"+op+"\\"+"日文语音") else print("日文语音目录已创建！")
-for key in id:
+pbar=tqdm(id)
+for key in pbar:
     filename=pinyin+"_CN_"+id[key]+".wav"
     if not os.path.exists(workdir+"\\"+op+"\\"+"日文语音\\"+filename.rstrip("wav")+"mp3"):
-        print("正在获取"+filename.rstrip("wav")+"mp3...")
+        pbar.set_description("正在获取"+filename.rstrip("wav")+"mp3...")
         response=requests.get("https://static.prts.wiki/voice/"+res+"/"+op+"_"+key+".wav")
         open(workdir+"\\temp\\"+filename,"wb").write(response.content)
         mp3=AudioSegment.from_wav(workdir+"\\temp\\"+filename)
         mp3.export(workdir+"\\"+op+"\\"+"日文语音\\"+filename.rstrip("wav")+"mp3",format="mp3")
         os.remove(workdir+"\\temp\\"+filename)
-        print(filename.rstrip("wav")+"mp3已获取完成！")
+        #pbar.set_description(filename.rstrip("wav")+"mp3已获取完成！")
+        #sleep(0.2)
     else:
-        print(filename.rstrip("wav")+"mp3已存在!")
+        pbar.set_description(filename.rstrip("wav")+"mp3已存在!")
+    sleep(0.05)
 os.mkdir(workdir+"\\"+op+"\\"+"中文语音") if not os.path.exists(workdir+"\\"+op+"\\"+"中文语音") else print("中文语音目录已创建！")
-for key in id:
+pbar2=tqdm(id)
+for key in pbar2:
     filename=pinyin+"_zh_CN_"+id[key]+".wav"
     if not os.path.exists(workdir+"\\"+op+"\\"+"中文语音\\"+filename.rstrip("wav")+"mp3"):
-        print("正在获取"+filename.rstrip("wav")+"mp3...")
+        pbar2.set_description("正在获取"+filename.rstrip("wav")+"mp3...")
         response=requests.get("https://static.prts.wiki/voice_cn/"+res+"/"+op+"_"+key+".wav")
         open(workdir+"\\temp\\"+filename,"wb").write(response.content)
         mp3=AudioSegment.from_wav(workdir+"\\temp\\"+filename)
         mp3.export(workdir+"\\"+op+"\\"+"中文语音\\"+filename.rstrip("wav")+"mp3",format="mp3")
         os.remove(workdir+"\\temp\\"+filename)
-        print(filename.rstrip("wav")+"mp3已获取完成！")
+        #pbar2.set_description(filename.rstrip("wav")+"mp3已获取完成！")
+        #sleep(0.2)
     else:
-        print(filename.rstrip("wav")+"mp3已存在!")
+        pbar2.set_description(filename.rstrip("wav")+"mp3已存在!")
+    sleep(0.05)
 amount=0
 lost=[]
 for key in id:
