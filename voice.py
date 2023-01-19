@@ -70,8 +70,11 @@ def download(lang:str,kind="",res=res):
             response=requests.get("https://static.prts.wiki/voice"+cn+custom+"/"+res+"/"+"CN_"+id[key]+".wav",headers={'User-Agent': random.choice(header)})
             with open(workdir+"\\temp\\"+filename,"wb") as f:
                 f.write(response.content)
-            mp3=AudioSegment.from_wav(workdir+"\\temp\\"+filename)
-            mp3.export(workdir+"\\"+op+"\\"+kind+lang+"语音\\"+filename.rstrip("wav")+"mp3",format="mp3")
+            try:
+                mp3=AudioSegment.from_wav(workdir+"\\temp\\"+filename)
+                mp3.export(workdir+"\\"+op+"\\"+kind+lang+"语音\\"+filename.rstrip("wav")+"mp3",format="mp3")
+            except(FileNotFoundError):
+                print("未找到文件" + res+"/"+"CN_"+id[key]+".wav")
             os.remove(workdir+"\\temp\\"+filename)
             #pbar.set_description(filename.rstrip("wav")+"mp3已获取完成！")
             #sleep(0.2)
@@ -86,24 +89,6 @@ if res2 and res3!="Y" and res3!="y":
     download("中文",kind="特殊",res=res2)
 if res3=="Y" or res3=="y":
     download("方言",kind="特殊",res=res2)
-#amount=0
-#lost=[]
-#for key in id:
-#    filename=pinyin+"_CN_"+id[key]+".wav"
-#    os.remove(workdir+"\\temp\\"+filename) if os.path.exists(workdir+"\\temp\\"+filename) else ""
-#    if os.path.exists(workdir+"\\"+op+"\\日文语音\\"+filename.rstrip("wav")+"mp3"):
-#        amount+=1
-#    else:
-#        lost.append(filename.rstrip("wav")+"mp3")
-#    filename=pinyin+"_zh_CN_"+id[key]+".wav"
-#    if os.path.exists(workdir+"\\"+op+"\\中文语音\\"+filename.rstrip("wav")+"mp3"):
-#        amount+=1
-#    else:
-#        lost.append(filename.rstrip("wav")+"mp3")
-#    os.remove(workdir+"\\temp\\"+filename) if os.path.exists(workdir+"\\temp\\"+filename) else ""
-#if amount==70:
-#    print("\n语音文件获取完成")
-#else:
-#    print("\n、".join(lost).rstrip("、")+"未获取成功，请重试")
+
 os.rmdir(workdir+"\\temp\\")
 input("\n\n按下回车关闭窗口")
