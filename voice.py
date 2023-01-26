@@ -72,7 +72,7 @@ def download(lang:str,kind="",res=res):
                 f.write(response.content)
             try:
                 mp3=AudioSegment.from_wav(workdir+"\\temp\\"+filename)
-                mp3.export(workdir+"\\"+op+"\\"+kind+lang+"语音\\"+filename.rstrip("wav")+"mp3",format="mp3")
+                mp3.export(workdir+"\\"+op+"\\"+kind+lang+"语音\\"+filename.rstrip("wav")+"mp3",format="mp3",bitrate="320k")
             except(FileNotFoundError):
                 print("未找到文件" + res+"/"+"CN_"+id[key]+".wav")
             os.remove(workdir+"\\temp\\"+filename)
