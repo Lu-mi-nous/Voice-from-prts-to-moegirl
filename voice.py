@@ -6,6 +6,7 @@ import requests
 from time import sleep
 from tqdm import tqdm
 import random
+from dict import *
 #import urllib.parse
 
 op=input("输入干员名称以获取该干员全部语音文件：")
