@@ -42,7 +42,8 @@ else:
 id={'任命助理':'001','交谈1':'002','交谈2':'003','交谈3':'004','晋升后交谈1':'005','晋升后交谈2':'006','信赖提升后交谈1':'007','信赖提升后交谈2':'008','信赖提升后交谈3':'009','闲置':'010','干员报到':'011','观看作战记录':'012','精英化晋升1':'013','精英化晋升2':'014','编入队伍':'017','任命队长':'018','行动出发':'019','行动开始':'020','选中干员1':'021','选中干员2':'022','部署1':'023','部署2':'024','作战中1':'025','作战中2':'026','作战中3':'027','作战中4':'028','完成高难行动':'029','3星结束行动':'030','非3星结束行动':'031','行动失败':'032','进驻设施':'033','戳一下':'034','信赖触摸':'036','标题':'037','问候':'042'}
 workdir=os.getcwd()
 operator=re.search('char_(\d+)_(\w+)',res).group(2) if re.search('char_(\d+)_(\w+)',res) else ""
-num=re.search('char_(\d+)_(\w+)',res).group(1)(%.*)_+",url).group(1))).group(1)==urllib.parse.unquote(re.search("(%.*)_+",url).group(1)) else None
+num=re.search('char_(\d+)_(\w+)',res).group(1)
+#zh=urllib.parse.unquote(re.search("(%.*)_+",url).group(1)) if re.search("([\u4e00-\u9fa5]+)",urllib.parse.unquote(re.search("(%.*)_+",url).group(1))).group(1)==urllib.parse.unquote(re.search("(%.*)_+",url).group(1)) else None
 os.mkdir(workdir+"\\"+op+"\\") if not os.path.exists(workdir+"\\"+op+"\\") else print(op+"语音目录已存在！")
 os.mkdir(workdir+"\\temp\\") if not os.path.exists(workdir+"\\temp\\") else print("缓存目录已存在")
 py=lazy_pinyin(op)
@@ -67,7 +68,7 @@ def download(lang:str,kind="",res=res):
         filename=pinyin+zh+"_CN_"+id[key]+".wav"
         if not os.path.exists(workdir+"\\"+op+"\\"+kind+lang+"语音\\"+filename.rstrip("wav")+"mp3"):
             pbar.set_description("正在获取"+filename.rstrip("wav")+"mp3...")
-            response=requests.get("https://static.prts.wiki/voice"+cn+custom+"/"+res+"/"+"CN_"+id[key]+".wav",headers={'User-Agent': random.choice(header), 'Referer':"https://prts.wiki/w/"+urllib.parse.quote(op)+"/%E8%AF%AD%E9%9F%B3%E8%AE%B0%E5%BD%95"})
+            response=requests.get("https://static.prts.wiki/voice"+cn+custom+"/"+res+"/"+"CN_"+id[key]+".wav",headers={'User-Agent': random.choice(header), 'Referer':"https://prts.wiki/w/"+urllib.parse.quote(op)+r"/%E8%AF%AD%E9%9F%B3%E8%AE%B0%E5%BD%95"})
             with open(workdir+"\\temp\\"+filename,"wb") as f:
                 f.write(response.content)
             try:
@@ -89,24 +90,5 @@ if res2 and res3!="Y" and res3!="y":
     download("中文",kind="特殊",res=res2)
 if res3=="Y" or res3=="y":
     download("方言",kind="特殊",res=res2)
-#amount=0
-#lost=[]
-#for key in id:
-#    filename=pinyin+"_CN_"+id[key]+".wav"
-#    os.remove(workdir+"\\temp\\"+filename) if os.path.exists(workdir+"\\temp\\"+filename) else ""
-#    if os.path.exists(workdir+"\\"+op+"\\日文语音\\"+filename.rstrip("wav")+"mp3"):
-#        amount+=1
-#    else:
-#        lost.append(filename.rstrip("wav")+"mp3")
-#    filename=pinyin+"_zh_CN_"+id[key]+".wav"
-#    if os.path.exists(workdir+"\\"+op+"\\中文语音\\"+filename.rstrip("wav")+"mp3"):
-#        amount+=1
-#    else:
-#        lost.append(filename.rstrip("wav")+"mp3")
-#    os.remove(workdir+"\\temp\\"+filename) if os.path.exists(workdir+"\\temp\\"+filename) else ""
-#if amount==70:
-#    print("\n语音文件获取完成")
-#else:
-#    print("\n、".join(lost).rstrip("、")+"未获取成功，请重试")
 os.rmdir(workdir+"\\temp\\")
 input("\n\n按下回车关闭窗口")
