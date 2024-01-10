@@ -37,7 +37,7 @@ html=requests.get('https://m.prts.wiki/api.php', params={'action': 'query'，
                                                          'format': 'json'，
                                                          'formatversion': 'latest'
                                                         })。json()
-for _ 在 html['query']['pages']:
+for _ in html['query']['pages']:
     if _['title'] == op+'/语音记录':
         res = _['revisions'][0]['content']
 header=["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"，
